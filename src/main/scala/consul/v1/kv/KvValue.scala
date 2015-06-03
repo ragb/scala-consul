@@ -1,15 +1,16 @@
 package consul.v1.kv
 
-import java.util.Base64
+import org.apache.commons.codec.binary.Base64
 import play.api.libs.json.Reads._
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sun.security.krb5.internal.EncAPRepPart
 
 case class KvValue(CreateIndex: Int, ModifyIndex: Int, LockIndex: Int, Key: String, Flags: Int, Value: String, Session: Option[String])
 object KvValue{
 
   val base64valueReads = StringReads.map{ case encodedValue =>
-    new String(Base64.getDecoder.decode(encodedValue))
+    new String(new Base64().decode(encodedValue))
   }
 
   implicit val reads = (
